@@ -1,0 +1,184 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.11.1
+  creationTimestamp: null
+  name: operatordefinitions.openaios.4pd.io
+spec:
+  group: openaios.4pd.io
+  names:
+    kind: OperatorDefinition
+    listKind: OperatorDefinitionList
+    plural: operatordefinitions
+    shortNames:
+    - opdef
+    singular: operatordefinition
+  scope: Cluster
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: "desc"
+        properties:
+          apiVersion:
+            description: "version"
+            type: string
+          kind:
+            description: "kind"
+            type: string
+          metadata:
+            type: object
+          operatorType:
+            enum:
+            - batch
+            - stream
+            - model-serving
+            - service
+            - controller
+            type: string
+          provisioner:
+            description: Operator Provisioner
+            properties:
+              chartRef:
+                description: 'one of the format of an operator: helm charts'
+                properties:
+                  name:
+                    type: string
+                  repository:
+                    properties:
+                      caFile:
+                        type: string
+                      certFile:
+                        type: string
+                      insecureSkipTLSVerify:
+                        type: boolean
+                      keyFile:
+                        type: string
+                      passCredentialsAll:
+                        type: boolean
+                      password:
+                        type: string
+                      url:
+                        type: string
+                      username:
+                        type: string
+                    required:
+                    - url
+                    type: object
+                  version:
+                    type: string
+                required:
+                - name
+                - version
+                type: object
+            type: object
+          spec:
+            description: OperatorDefinitionSpec defines the desired state of OperatorDefinition
+            properties:
+              credentials:
+                items:
+                  properties:
+                    conn:
+                      type: string
+                    name:
+                      type: string
+                    type:
+                      type: string
+                  required:
+                  - name
+                  - type
+                  type: object
+                type: array
+              inputs:
+                items:
+                  properties:
+                    conditions:
+                      items:
+                        type: object
+                      type: array
+                    credential:
+                      type: string
+                    description:
+                      description: input description
+                      type: string
+                    format:
+                      type: string
+                    kedroDataSet:
+                      type: string
+                    meta:
+                      properties:
+                        id:
+                          type: string
+                        location:
+                          type: string
+                        name:
+                          type: string
+                        warehouse:
+                          type: string
+                      type: object
+                    name:
+                      type: string
+                    resourceType:
+                      type: string
+                    tags:
+                      additionalProperties:
+                        type: string
+                      type: object
+                  required:
+                  - name
+                  type: object
+                type: array
+              outputs:
+                items:
+                  properties:
+                    conditions:
+                      items:
+                        type: object
+                      type: array
+                    credential:
+                      type: string
+                    description:
+                      description: input description
+                      type: string
+                    format:
+                      type: string
+                    kedroDataSet:
+                      type: string
+                    meta:
+                      properties:
+                        id:
+                          type: string
+                        location:
+                          type: string
+                        name:
+                          type: string
+                        warehouse:
+                          type: string
+                      type: object
+                    name:
+                      type: string
+                    resourceType:
+                      type: string
+                    tags:
+                      additionalProperties:
+                        type: string
+                      type: object
+                  required:
+                  - name
+                  type: object
+                type: array
+              params:
+                type: string
+              runtime:
+                type: string
+            type: object
+        required:
+        - operatorType
+        - provisioner
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
